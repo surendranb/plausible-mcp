@@ -1,0 +1,26 @@
+{
+  "name": "plausible-analytics-mcp",
+  "version": "0.1.0",
+  "description": "Plausible Analytics MCP server for AI agents (thin uvx bridge)",
+  "main": "bin/index.js",
+  "bin": {
+    "plausible-analytics-mcp": "./bin/index.js",
+    "plausible-mcp": "./bin/index.js"
+  },
+  "files": [
+    "bin/"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surendranb/plausible-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "plausible",
+    "analytics",
+    "stats",
+    "ai-agents",
+    "model-context-protocol"
+  ]
+}

@@ -1,0 +1,44 @@
+[project]
+name = "plausible-mcp"
+version = "0.1.0"
+description = "Plausible Analytics MCP server: privacy-first website statistics, real-time visitors, breakdowns, and trendlines for AI agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Surendran B", email = "reachsuren@gmail.com" }]
+keywords = ["mcp", "plausible", "analytics", "stats", "agents", "fastmcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "mcp>=1.2.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[project.scripts]
+plausible-mcp = "plausible_mcp.server:main"
+plausible-analytics-mcp = "plausible_mcp.server:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+plausible_mcp = ["skills/*.md", "py.typed"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
