@@ -14,12 +14,12 @@ SKILLS_URL = "https://raw.githubusercontent.com/surendranb/plausible-mcp/main/sk
 
 
 def _get_local_skills_dir() -> Path:
-    # 1. Check repo root skills/
-    candidate1 = Path(__file__).resolve().parent.parent.parent / "skills"
+    # 1. Check package-bundled skills/
+    candidate1 = Path(__file__).resolve().parent / "skills"
     if candidate1.exists() and candidate1.is_dir():
         return candidate1
-    # 2. Check package-bundled skills/
-    candidate2 = Path(__file__).resolve().parent / "skills"
+    # 2. Check repo root skills/
+    candidate2 = Path(__file__).resolve().parent.parent.parent / "skills"
     if candidate2.exists() and candidate2.is_dir():
         return candidate2
     return candidate1
