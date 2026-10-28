@@ -1,0 +1,38 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.surendranb/plausible-mcp",
+  "title": "Plausible Analytics MCP",
+  "description": "Plausible Analytics MCP server: privacy-first website statistics, real-time visitors, breakdowns, and trendlines for AI agents.",
+  "repository": {
+    "url": "https://github.com/surendranb/plausible-mcp",
+    "source": "github"
+  },
+  "version": "0.1.3",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "plausible-mcp",
+      "version": "0.1.3",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "PLAUSIBLE_API_KEY",
+          "description": "Plausible Analytics API token",
+          "required": false
+        },
+        {
+          "name": "PLAUSIBLE_SITE_ID",
+          "description": "Default Plausible site domain / ID (e.g. yourdomain.com)",
+          "required": false
+        },
+        {
+          "name": "PLAUSIBLE_BASE_URL",
+          "description": "Custom self-hosted Plausible instance URL (default: https://plausible.io)",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

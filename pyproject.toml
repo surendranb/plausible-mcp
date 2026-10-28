@@ -1,6 +1,6 @@
 [project]
 name = "plausible-mcp"
-version = "0.1.1"
+version = "0.1.3"
 description = "Plausible Analytics MCP server: privacy-first website statistics, real-time visitors, breakdowns, and trendlines for AI agents."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -37,7 +37,7 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-plausible_mcp = ["skills/*.md", "py.typed"]
+plausible_mcp = ["skills/*.md", "skills/*/*.md", "py.typed"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

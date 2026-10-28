@@ -1,0 +1,21 @@
+id: plausible-mcp
+name: Plausible Analytics
+description: Privacy-first web analytics, real-time visitors, breakdowns, and trendlines for AI agents
+category: analytics
+author: Surendran B
+repository: https://github.com/surendranb/plausible-mcp
+homepage: https://github.com/surendranb/plausible-mcp
+license: MIT
+runtime:
+  type: uvx
+  package: plausible-mcp==0.1.3
+  command: uvx
+  args:
+    - plausible-mcp==0.1.3
+environmentVariables:
+  - name: PLAUSIBLE_API_KEY
+    description: Plausible Analytics API token
+    required: false
+  - name: PLAUSIBLE_SITE_ID
+    description: Default Plausible site domain / ID (e.g. yourdomain.com)
+    required: false
