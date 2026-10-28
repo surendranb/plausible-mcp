@@ -1,5 +1,7 @@
 # plausible-mcp
 
+<!-- mcp-name: io.github.surendranb/plausible-mcp -->
+
 [![PyPI version](https://img.shields.io/pypi/v/plausible-mcp.svg)](https://pypi.org/project/plausible-mcp/)
 [![npm version](https://img.shields.io/npm/v/plausible-analytics-mcp.svg)](https://www.npmjs.com/package/plausible-analytics-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)

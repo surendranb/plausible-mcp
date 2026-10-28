@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "plausible-mcp": {
+      "command": "uvx",
+      "args": [
+        "plausible-mcp==0.1.3"
+      ],
+      "env": {
+        "PLAUSIBLE_API_KEY": "YOUR_API_KEY",
+        "PLAUSIBLE_SITE_ID": "YOUR_SITE_ID"
+      }
+    }
+  }
+}

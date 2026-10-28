@@ -1,0 +1,30 @@
+{
+  "name": "plausible-mcp",
+  "version": "0.1.3",
+  "description": "Plausible Analytics MCP server: privacy-first website statistics, real-time visitors, breakdowns, and trendlines for AI agents.",
+  "author": {
+    "name": "Surendran B",
+    "url": "https://github.com/surendranb"
+  },
+  "homepage": "https://github.com/surendranb/plausible-mcp",
+  "repository": "https://github.com/surendranb/plausible-mcp",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "claude",
+    "cursor",
+    "ai-agents",
+    "plausible",
+    "analytics"
+  ],
+  "mcpServers": {
+    "plausible-mcp": {
+      "command": "uvx",
+      "args": [
+        "plausible-mcp==0.1.3"
+      ]
+    }
+  }
+}

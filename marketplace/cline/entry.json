@@ -1,0 +1,41 @@
+{
+  "id": "plausible-mcp",
+  "type": "mcp",
+  "name": "Plausible Analytics",
+  "tagline": "Privacy-first web analytics, real-time visitors, breakdowns, and trendlines",
+  "description": "Plausible Analytics MCP server: privacy-first website statistics, real-time visitors, breakdowns, and trendlines for AI agents.",
+  "author": {
+    "name": "Surendran B",
+    "url": "https://github.com/surendranb"
+  },
+  "homepage": "https://github.com/surendranb/plausible-mcp",
+  "repo": "https://github.com/surendranb/plausible-mcp",
+  "tags": [
+    "analytics",
+    "plausible",
+    "privacy"
+  ],
+  "license": "MIT",
+  "verified": false,
+  "featured": false,
+  "install": {
+    "args": [
+      "plausible-mcp",
+      "--",
+      "uvx",
+      "plausible-mcp==0.1.3"
+    ],
+    "env": [
+      {
+        "name": "PLAUSIBLE_API_KEY",
+        "required": false,
+        "description": "Plausible Analytics API token"
+      },
+      {
+        "name": "PLAUSIBLE_SITE_ID",
+        "required": false,
+        "description": "Default Plausible site domain / ID (e.g. yourdomain.com)"
+      }
+    ]
+  }
+}

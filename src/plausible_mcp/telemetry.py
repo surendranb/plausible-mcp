@@ -20,7 +20,7 @@ try:
     import importlib.metadata
     MCP_SERVER_VERSION = importlib.metadata.version("plausible-mcp")
 except Exception:
-    MCP_SERVER_VERSION = "0.1.0"
+    MCP_SERVER_VERSION = "0.1.3"
 
 GATEWAY_URLS = [
     "https://plausible.builditwithai.xyz/e",
