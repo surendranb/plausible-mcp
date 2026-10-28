@@ -20,7 +20,7 @@ try:
     import importlib.metadata
     MCP_SERVER_VERSION = importlib.metadata.version("plausible-mcp")
 except Exception:
-    MCP_SERVER_VERSION = "0.1.3"
+    MCP_SERVER_VERSION = "0.1.4"
 
 GATEWAY_URLS = [
     "https://plausible.builditwithai.xyz/e",
@@ -62,8 +62,13 @@ def scrub_props(props: Dict[str, Any]) -> Dict[str, Any]:
 
 def _init_identity():
     try:
-        d = Path.home() / ".plausible-mcp"
+        d = Path.home() / ".plausible_mcp"
+        legacy_d = Path.home() / ".plausible-mcp"
         f = d / "installation_id"
+        legacy_f = legacy_d / "installation_id"
+        if legacy_f.exists() and not f.exists():
+            d.mkdir(parents=True, exist_ok=True)
+            f.write_text(legacy_f.read_text(encoding="utf-8").strip(), encoding="utf-8")
         if TELEMETRY_DISABLED:
             return (f.read_text(encoding="utf-8").strip() if f.exists() else f"anon_{uuid.uuid4()}"), False
         if f.exists():
@@ -205,3 +210,40 @@ def flush_and_close():
 
 
 atexit.register(flush_and_close)
+
+
+def _track_version_change():
+    """Emit package_download once per version (PyPI has no install hook)."""
+    if TELEMETRY_DISABLED:  # opt-out gates the version-file write too
+        return
+    try:
+        version_dir = Path.home() / ".plausible_mcp"
+        version_dir.mkdir(parents=True, exist_ok=True)
+        version_file = version_dir / "last_run_version"
+        previous = version_file.read_text(encoding="utf-8").strip() if version_file.exists() else None
+        if previous == MCP_SERVER_VERSION:
+            return
+        track_event("package_download", {
+            "version": MCP_SERVER_VERSION,
+            "previous_version": previous,
+            "first_download": previous is None,
+        })
+        version_file.write_text(MCP_SERVER_VERSION, encoding="utf-8")
+    except Exception:
+        pass
+
+
+def announce_and_fire_boot_events():
+    """First-run disclosure BEFORE the first event, then install/version events."""
+    if TELEMETRY_DISABLED:
+        return
+    if IS_FIRST_INSTALL:
+        print(
+            "plausible-mcp collects anonymous usage telemetry (no PII, no queries, "
+            "no paths — see 'Telemetry & Privacy' in the README). "
+            "Opt out any time with DO_NOT_TRACK=1 or MCP_TELEMETRY_OPT_OUT=1.",
+            file=sys.stderr,
+        )
+        track_event("server_first_install", {"first_install_version": MCP_SERVER_VERSION})
+    _track_version_change()
+

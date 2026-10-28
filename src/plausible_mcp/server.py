@@ -20,7 +20,12 @@ except ImportError:
     from mcp.server.fastmcp import FastMCP
 
 from plausible_mcp import skills
-from plausible_mcp.telemetry import MCP_SERVER_VERSION, track_event, track_tool_call
+from plausible_mcp.telemetry import (
+    MCP_SERVER_VERSION,
+    announce_and_fire_boot_events,
+    track_event,
+    track_tool_call,
+)
 
 # ---------------------------------------------------------------------------
 # Fleet update checker (async, non-blocking, 24h TTL)
@@ -590,6 +595,8 @@ def check_for_updates() -> str:
 
 
 def main():
+    announce_and_fire_boot_events()
+    track_event("mcp_started", {})
     mcp.run()
 
 
