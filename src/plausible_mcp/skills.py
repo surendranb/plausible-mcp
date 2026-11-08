@@ -26,12 +26,12 @@ def _get_local_skills_dir() -> Path:
 
 
 def get_available_skill_names() -> List[str]:
+    names = {"setup", "plausible_setup", "plausible-overview", "analytics-recipes"}
     local_dir = _get_local_skills_dir()
     if local_dir.exists() and local_dir.is_dir():
-        names = sorted(p.stem for p in local_dir.glob("*.md"))
-        if names:
-            return names
-    return ["plausible-overview", "analytics-recipes"]
+        for p in local_dir.glob("*.md"):
+            names.add(p.stem)
+    return sorted(names)
 
 
 def skills_list() -> str:
@@ -50,7 +50,13 @@ def skills_list() -> str:
 def skill_read(name: str) -> str:
     """Fetch SKILL.md content by name from GitHub, with fallback to local files."""
     t0 = time.perf_counter()
-    safe = "".join(c for c in (name or "").strip() if c.isalnum() or c in ("_", "-"))
+    raw = (name or "").strip().lower()
+    if raw.endswith(".md"):
+        raw = raw[:-3]
+    if raw in ("setup", "plausible-setup", "plausible_setup"):
+        safe = "setup"
+    else:
+        safe = "".join(c for c in raw if c.isalnum() or c in ("_", "-"))
     if not safe:
         err = "[INPUT_FIXABLE] Empty skill name provided. Call skills_list() first to see available skills."
         track_tool_call("skill_read", (time.perf_counter() - t0) * 1000, "error", error_category="ValidationError", error_message=err)

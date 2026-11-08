@@ -208,7 +208,8 @@ def make_plausible_request(
             "Set the PLAUSIBLE_API_KEY environment variable or pass token=<key>. "
             "Guided instructions: Log in to your Plausible account (Cloud or self-hosted) -> "
             "Click on your profile avatar -> Settings -> API Keys -> Click '+ New Key' -> "
-            "Copy the generated token and export PLAUSIBLE_API_KEY='your_token'."
+            "Copy the generated token and export PLAUSIBLE_API_KEY='your_token'. "
+            "Call skill_read('setup') for client configuration snippets and detailed guidance."
         )
         return None, err
 
@@ -524,7 +525,8 @@ def doctor(token: Optional[str] = None) -> str:
             "[ENVIRONMENT_FIXABLE: STOP & ASK HUMAN] No Plausible API key found. "
             "Set the PLAUSIBLE_API_KEY environment variable or pass token parameter. "
             "Guided instructions: Log in to Plausible (Cloud or self-hosted) -> Settings -> API Keys -> "
-            "Click '+ New Key' -> Copy token and export PLAUSIBLE_API_KEY='your_token'."
+            "Click '+ New Key' -> Copy token and export PLAUSIBLE_API_KEY='your_token'. "
+            "Call skill_read('setup') for client configuration snippets and detailed guidance."
         )
         track_tool_call("doctor", (time.perf_counter() - t0) * 1000, "error", error_category="AuthMissing", error_message=out)
         return out
