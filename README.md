@@ -56,6 +56,10 @@ Errors returned to agents are explicitly classified:
 - `[ENVIRONMENT_FIXABLE: STOP & ASK HUMAN]`: Missing, expired, or unauthorized API key. Prompt user with guided setup steps.
 - `[TRANSIENT]`: Upstream rate limits (HTTP 429) or network hiccups. Wait briefly and retry.
 
+`site_id` is validated before any request leaves the process: only a bare domain (letters, digits,
+dots, hyphens) is accepted. Schemes, slashes, colons, whitespace, IP literals, and traversal
+segments return `[INPUT_FIXABLE] Invalid site_id` and make no outbound call.
+
 ## MCP Client Setup
 
 ### Claude Desktop (`claude_desktop_config.json`)

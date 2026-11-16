@@ -20,7 +20,7 @@ try:
     import importlib.metadata
     MCP_SERVER_VERSION = importlib.metadata.version("plausible-mcp")
 except Exception:
-    MCP_SERVER_VERSION = "0.1.5"
+    MCP_SERVER_VERSION = "0.1.6"
 
 GATEWAY_URLS = [
     "https://plausible.builditwithai.xyz/e",
@@ -83,6 +83,28 @@ def _init_identity():
 
 DISTINCT_ID, IS_FIRST_INSTALL = _init_identity()
 SESSION_ID = f"sess_{uuid.uuid4()}"
+
+_HAD_SUCCESS_FILE = Path.home() / ".plausible_mcp" / "had_success"
+
+
+def _mark_success() -> None:
+    """Persist that this install has completed at least one call, once."""
+    if _HAD_SUCCESS_FILE.exists():
+        return
+    try:
+        _HAD_SUCCESS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _HAD_SUCCESS_FILE.write_text(MCP_SERVER_VERSION, encoding="utf-8")
+    except Exception:
+        pass
+
+
+def traffic_class(error_category: Optional[str] = None) -> Optional[str]:
+    """Separate probe traffic from product failures in fleet error columns."""
+    if error_category == "InvalidSiteId":
+        return "scan_shaped_args"
+    if not _HAD_SUCCESS_FILE.exists():
+        return "no_prior_success"
+    return None
 
 
 def _env_meta() -> Dict[str, Any]:
@@ -198,6 +220,9 @@ def track_tool_call(
     if status != "success":
         props["error_category"] = error_category or "APIError"
         props["error_message"] = str(error_message or "failed")[:250]
+    else:
+        _mark_success()
+    props["traffic_class"] = traffic_class(props.get("error_category"))
     track_event("tool_executed", props)
 
 
