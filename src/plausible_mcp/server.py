@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import datetime
 import functools
+import ipaddress
 import json
 import os
 import re
@@ -158,11 +159,27 @@ def resolve_token(token: Optional[str] = None) -> Optional[str]:
     return None
 
 
+# A real Plausible site id is a bare domain: letters, digits, dots, hyphens.
+SITE_ID_INVALID = (
+    "[INPUT_FIXABLE] Invalid site_id. Pass the domain of a site in your Plausible account "
+    "(e.g. 'surendranb.com'): letters, digits, dots and hyphens only — no scheme, slash, colon "
+    "or whitespace."
+)
+_SITE_ID_RE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9.-]{0,251}[A-Za-z0-9])?$")
+
+
 def clean_site_id(site_id: str) -> str:
+    """Single validation boundary for site_id: returns '' for anything that is not a bare domain."""
     cleaned = (site_id or "").strip()
     cleaned = re.sub(r"^https?://", "", cleaned, flags=re.IGNORECASE)
     cleaned = cleaned.rstrip("/")
-    return cleaned
+    if ".." in cleaned or "." not in cleaned or not _SITE_ID_RE.match(cleaned):
+        return ""
+    try:
+        ipaddress.ip_address(cleaned)
+        return ""
+    except ValueError:
+        return cleaned
 
 
 def resolve_date_params(date_range: str) -> tuple[str, Optional[str]]:
@@ -302,8 +319,8 @@ def get_aggregate_stats(
     t0 = time.perf_counter()
     site = clean_site_id(site_id)
     if not site:
-        out = "[INPUT_FIXABLE] Missing site_id. Please provide the site domain name (e.g. 'surendranb.com')."
-        track_tool_call("get_aggregate_stats", (time.perf_counter() - t0) * 1000, "error", error_category="ValidationError", error_message=out)
+        out = SITE_ID_INVALID
+        track_tool_call("get_aggregate_stats", (time.perf_counter() - t0) * 1000, "error", error_category="InvalidSiteId", error_message=out)
         return out
 
     period, date = resolve_date_params(date_range)
@@ -367,8 +384,8 @@ def get_breakdown(
     t0 = time.perf_counter()
     site = clean_site_id(site_id)
     if not site:
-        out = "[INPUT_FIXABLE] Missing site_id. Please provide the site domain name (e.g. 'surendranb.com')."
-        track_tool_call("get_breakdown", (time.perf_counter() - t0) * 1000, "error", error_category="ValidationError", error_message=out)
+        out = SITE_ID_INVALID
+        track_tool_call("get_breakdown", (time.perf_counter() - t0) * 1000, "error", error_category="InvalidSiteId", error_message=out)
         return out
 
     prop, prop_err = resolve_property(property_name)
@@ -425,8 +442,8 @@ def get_realtime_visitors(
     t0 = time.perf_counter()
     site = clean_site_id(site_id)
     if not site:
-        out = "[INPUT_FIXABLE] Missing site_id. Please provide the site domain name (e.g. 'surendranb.com')."
-        track_tool_call("get_realtime_visitors", (time.perf_counter() - t0) * 1000, "error", error_category="ValidationError", error_message=out)
+        out = SITE_ID_INVALID
+        track_tool_call("get_realtime_visitors", (time.perf_counter() - t0) * 1000, "error", error_category="InvalidSiteId", error_message=out)
         return out
 
     params = {"site_id": site}
@@ -473,8 +490,8 @@ def get_timeseries(
     t0 = time.perf_counter()
     site = clean_site_id(site_id)
     if not site:
-        out = "[INPUT_FIXABLE] Missing site_id. Please provide the site domain name (e.g. 'surendranb.com')."
-        track_tool_call("get_timeseries", (time.perf_counter() - t0) * 1000, "error", error_category="ValidationError", error_message=out)
+        out = SITE_ID_INVALID
+        track_tool_call("get_timeseries", (time.perf_counter() - t0) * 1000, "error", error_category="InvalidSiteId", error_message=out)
         return out
 
     period, date = resolve_date_params(date_range)
