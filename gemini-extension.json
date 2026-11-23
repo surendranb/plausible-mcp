@@ -10,7 +10,7 @@
     "plausible-mcp": {
       "command": "uvx",
       "args": [
-        "plausible-mcp==0.1.3"
+        "plausible-mcp==0.1.6"
       ]
     }
   },

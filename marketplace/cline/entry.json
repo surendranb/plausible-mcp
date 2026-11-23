@@ -23,7 +23,7 @@
       "plausible-mcp",
       "--",
       "uvx",
-      "plausible-mcp==0.1.3"
+      "plausible-mcp==0.1.6"
     ],
     "env": [
       {

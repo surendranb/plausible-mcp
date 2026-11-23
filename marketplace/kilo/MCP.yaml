@@ -8,10 +8,10 @@ homepage: https://github.com/surendranb/plausible-mcp
 license: MIT
 runtime:
   type: uvx
-  package: plausible-mcp==0.1.3
+  package: plausible-mcp==0.1.6
   command: uvx
   args:
-    - plausible-mcp==0.1.3
+    - plausible-mcp==0.1.6
 environmentVariables:
   - name: PLAUSIBLE_API_KEY
     description: Plausible Analytics API token
